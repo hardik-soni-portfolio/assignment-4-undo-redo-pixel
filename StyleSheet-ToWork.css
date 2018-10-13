@@ -1,18 +1,25 @@
 ﻿body {
+    font-family: Karla;
 }
 
 #headerToWork {
-    background-color: yellowgreen;
+    background-color: #ddd;
 }
 
     #headerToWork h1 {
         margin-top: 0;
     }
 
+#addNewToWork {
+    background-image: url(resources/icons8-plus-64.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
 #containerToWork {
     width: 80%;
     margin: auto;
-    background-color: yellow;
+    background-color: #ddd;
 }
 
 #actionsToWork {
@@ -20,12 +27,12 @@
     margin: auto;
     padding: 1px 10px 1px 10px;
 }
+
     #actionsToWork input[type=text] {
         width: 85%;
         border: none;
         border-bottom: ridge;
     }
-
 
 #toWorkItems p {
     display: inline;
