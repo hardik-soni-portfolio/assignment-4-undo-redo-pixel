@@ -20,11 +20,12 @@ function buildItemList() {
     for (var i = 0; i < stuff.length; i++) {
         //Author HS: create new LI element for each new ToWork item
         var toWorkItem = document.createElement("li");
+        toWorkItem.className = "liToWorkItem";
         toWorkItem.id = i;
 
         //Author HS: create a checkbox with the event listener to check for a check/uncheck change after it is created
         var toWorkCheck = document.createElement("input");
-        toWorkCheck.className = "checkbox"
+        toWorkCheck.className = "checkbox";
         toWorkCheck.type = "checkbox";
         toWorkCheck.id = i;
         toWorkCheck.addEventListener('change', function (e) {
@@ -53,7 +54,7 @@ function buildItemList() {
         var toWorkRemove = document.createElement("input");
         toWorkRemove.type = "button";
         toWorkRemove.id = i;
-        toWorkRemove.value = "Remove Item";
+       // toWorkRemove.value = "Remove Item";
         toWorkRemove.addEventListener('click', function (e) {
             //Author HS: check for the remove button that is called
             e = e || window.event;
@@ -76,6 +77,7 @@ function addItemToList() {
     stuff.push({ content: document.getElementById("enterNewToWork").value, isComplete: false });
     redoStack = []; //Author HS: set the redoStack to null
     undoStack.push(stuff.slice()); //Author HS: create a copy of stuff array and push it in the undoStack
+    document.getElementById("enterNewToWork").value =""; //Author SJ: setting the textbox to empty after getting the item
     buildItemList(); //Author HS: call this method to create elements on the HTML page
 }
 
@@ -87,19 +89,29 @@ function removeItemFromList(i) {
     buildItemList(); //Author HS: call this method to update the elements on the HTML page
 }
 function strikePara(i) {
-
+    //Author SJ: Strike item if checked
+    undoStack.push(JSON.parse(JSON.stringify(stuff))); //Author SJ: push stuff array to undo array
+    stuff[i].isComplete = true;//Author SJ: strike the checked item
+    buildItemList();//Author SJ: call this method to update the elements on the HTML page
 }
 
 
 function KeyDown(e) {
-    //Redo action on CTRL + Y
-    if (e.ctrlKey && e.keyCode == 89) {
-        alert("You pressed CRTL + Y");
+    //Author SJ: Redo action on CTRL + Y
+    if (e.ctrlKey && e.keyCode == 89) { 
+        if (redoStack.length > 0) {
+            stuff = redoStack.pop(); //Author SJ: deleting the topmost index value of redostack array and placing the remaing stack inside stuff array
+            undoStack.push(stuff.slice()); //Author SJ: copying stuff array to undoStack array
+            buildItemList(); //Author SJ: call this method to update the elements on the HTML page
+        }
     }
-    //Undo action on CTRL + Z
+    //Author SJ: Undo action on CTRL + Z
     if (e.ctrlKey && e.keyCode == 90) {
-        alert("You pressed CRTL + Z");
+        redoStack.push(stuff.slice()); //Author SJ: copying stuff array to redoStack array
+        stuff = undoStack.pop();//Author SJ: deleting the topmost index value of undostack array and placing the remaing stack inside stuff array
+        if (stuff === undefined) stuff = [];// Author SJ: checking if stuff array is empty and if yes making stuff an empty array
+        buildItemList(); //Author SJ: call this method to update the elements on the HTML page
     }
 }
 
-document.onkeydown = KeyDown;
+document.onkeydown = KeyDown; 
