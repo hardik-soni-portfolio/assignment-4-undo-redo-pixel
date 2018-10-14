@@ -1,43 +1,43 @@
 //Author HS:3 arrays to create maintain the undo-redo fucntionality
-var stuff = []; //Author HS: array to store values entered in the textbox
-var undoStack = []; //Author HS: array (of arrays) to be used while undo event occurs,
-var redoStack = []; //Author HS: array (of arrays) to be used while redo event occurs
+let stuff = []; //Author HS: array to store values entered in the textbox
+const undoStack = []; //Author HS: array (of arrays) to be used while undo event occurs,
+let redoStack = []; //Author HS: array (of arrays) to be used while redo event occurs
 
 function buildItemList() {
     //Author HS: on click of the "add" button a check for the previous UL element is made and deleted if already existing
     //Author HS: after deletion, a new UL is created and each new line item (ToWork item) is created as LI element
     //Author HS: and added to the newly created UL element
-    var prevUl = document.getElementById("toWorkItems");
+    const prevUl = document.getElementById("toWorkItems");
     if (prevUl !== null) {
         prevUl.remove();
     }
     //Author HS: variable for main div container
-    var divCont = document.getElementById("containerToWork");
-    var ulCont = document.createElement("ul"); //Author HS: create a new UL element
+    const divCont = document.getElementById("containerToWork");
+    const ulCont = document.createElement("ul"); //Author HS: create a new UL element
     ulCont.id = "toWorkItems";
 
     //Author HS: loop to create the HTML page depending on the number of items added in the stuff array
-    for (var i = 0; i < stuff.length; i++) {
+    for (let i = 0; i < stuff.length; i++) {
         //Author HS: create new LI element for each new ToWork item
-        var toWorkItem = document.createElement("li");
+        const toWorkItem = document.createElement("li");
         toWorkItem.className = "liToWorkItem";
         toWorkItem.id = i;
 
         //Author HS: create a checkbox with the event listener to check for a check/uncheck change after it is created
-        var toWorkCheck = document.createElement("input");
+        const toWorkCheck = document.createElement("input");
         toWorkCheck.className = "checkbox";
         toWorkCheck.type = "checkbox";
         toWorkCheck.id = i;
-        toWorkCheck.addEventListener('change', function (e) {
+        toWorkCheck.addEventListener('change', e => {
             //Author HS: identify the current checkbox that is checked/unchecked
             e = e || window.event;
-            var targetCheck = e.targetCheck || e.srcElement
+            const targetCheck = e.targetCheck || e.srcElement;
             if (targetCheck.checked) {
                 strikePara(parseInt(targetCheck.id)); //Author HS: call the method to strike the P element for each LI element
             }
         }, false);
         //Author HS: create a P element to use as a holder to display value entered in the textbox
-        var paraItem = document.createElement("p");
+        const paraItem = document.createElement("p");
         paraItem.id = i;
         paraItem.innerText = stuff[i].content;
         //Author HS: check for isComplete status and design it accordingly,
@@ -51,14 +51,14 @@ function buildItemList() {
         }
 
         //Author HS: create a remove button for each input element
-        var toWorkRemove = document.createElement("input");
+        const toWorkRemove = document.createElement("input");
         toWorkRemove.type = "button";
         toWorkRemove.id = i;
        // toWorkRemove.value = "Remove Item";
-        toWorkRemove.addEventListener('click', function (e) {
+        toWorkRemove.addEventListener('click', e => {
             //Author HS: check for the remove button that is called
             e = e || window.event;
-            var target = e.target || e.srcElement
+            const target = e.target || e.srcElement;
             removeItemFromList(parseInt(target.id))
         }, false);
         //Author HS: append child to LI elements
